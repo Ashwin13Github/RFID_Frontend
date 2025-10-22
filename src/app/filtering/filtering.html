@@ -1,0 +1,96 @@
+<div class="container">
+  <h2>RFID Logs Dashboard</h2>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+    
+    <!-- Location Filter -->
+    <div class="filter-item">
+      <label for="location">Location:</label>
+      <select id="location" [(ngModel)]="filterLocation">
+        <option value="">All Locations</option>
+        <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+      </select>
+    </div>
+
+    <!-- Action Filter -->
+    <div class="filter-item">
+      <label for="action">Action:</label>
+      <select id="action" [(ngModel)]="filterAction">
+        <option value="">All Actions</option>
+        <option value="Entry">Entry</option>
+        <option value="Exit">Exit</option>
+      </select>
+    </div>
+
+    <!-- From Date Filter -->
+    <div class="filter-item">
+      <label for="fromDate">From Date:</label>
+      <input
+        id="fromDate"
+        type="datetime-local"
+        [(ngModel)]="filterFromDate"
+      />
+    </div>
+
+    <!-- To Date Filter -->
+    <div class="filter-item">
+      <label for="toDate">To Date:</label>
+      <input
+        id="toDate"
+        type="datetime-local"
+        [(ngModel)]="filterToDate"
+      />
+    </div>
+
+    <!-- UID/Name Filter -->
+    <div class="filter-item">
+      <label for="uidOrName">UID / Name:</label>
+      <input
+        id="uidOrName"
+        type="text"
+        placeholder="Search by UID or Name"
+        [(ngModel)]="filterUidOrName"
+      />
+    </div>
+
+    <!-- Filter Button -->
+    <div class="filter-item">
+      <button class="btn btn-primary" (click)="applyFilters()">Filter</button>
+    </div>
+
+  </div>
+
+  <!-- Loading / Error Messages -->
+  <div *ngIf="isLoading" class="loading">Loading logs...</div>
+  <div *ngIf="errorMessage && !isLoading" class="error">{{ errorMessage }}</div>
+
+  <!-- Logs Table -->
+  <table *ngIf="!isLoading && filteredLogs.length > 0" class="rfid-table" style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Action</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of filteredLogs">
+        <td>{{ log.uid }}</td>
+        <td>{{ log.name }}</td>
+        <td>{{ log.location }}</td>
+        <td>
+          <span [ngClass]="log.action.toLowerCase() === 'entry' ? 'entry' : 'exit'">
+            {{ log.action }}
+          </span>
+        </td>
+        <td>{{ log.timestamp | date: 'yyyy/MM/dd hh:mm a' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Logs Found -->
+  <div *ngIf="!isLoading && filteredLogs.length === 0" class="no-logs">No logs found.</div>
+</div>

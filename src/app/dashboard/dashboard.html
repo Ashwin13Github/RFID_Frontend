@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Real-Time RFID Dashboard</h2>
+
+  <button class="Clear-Logs" (click)="onClearLogs()">Clear All Logs</button>
+
+  <table class="rfid-table">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>UID</th>
+        <th>Location</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of logs$ | async">
+        <td>{{ log.timestamp | date : 'short' }}</td>
+        <td>{{ log.uid }}</td>
+        <td>{{ log.location }}</td>
+        <td>
+          <span [class.entry]="log.action === 'Entry'" [class.exit]="log.action === 'Exit'">
+            {{ log.action }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

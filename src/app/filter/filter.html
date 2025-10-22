@@ -1,0 +1,59 @@
+<div class="container">
+  <h2 class="heading">RFID Logs</h2>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <!-- Location Dropdown -->
+    <select class="filter-input" [(ngModel)]="filterLocation">
+      <option value="">All Locations</option>
+      <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+    </select>
+
+    <!-- Action Dropdown -->
+    <select class="filter-input" [(ngModel)]="filterAction">
+      <option value="">All Actions</option>
+      <option value="Entry">Entry</option>
+      <option value="Exit">Exit</option>
+    </select>
+
+    <!-- After Datetime -->
+    <input class="filter-input" type="text" placeholder="MM/dd/yy, h:mm a" [(ngModel)]="filterAfterDate" />
+
+    <!-- UID Search -->
+    <input class="filter-input" type="text" placeholder="UID" [(ngModel)]="filterUid" />
+
+    <!-- Filter Button -->
+    <button class="filter-btn" (click)="applyFilters()">Filter</button>
+  </div>
+
+  <!-- Loading / Error -->
+  <div class="status-message" *ngIf="isLoading">Loading logs...</div>
+  <div class="status-message error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <!-- Logs Table -->
+  <table *ngIf="!isLoading && filteredLogs.length > 0" class="rfid-table">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>Location</th>
+        <th>Action</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of filteredLogs">
+        <td>{{ log.uid }}</td>
+        <td>{{ log.location }}</td>
+        <td>
+          <span [ngClass]="log.action.toLowerCase() === 'entry' ? 'entry' : 'exit'">
+            {{ log.action }}
+          </span>
+        </td>
+        <td>{{ log.timestamp | date : 'MM/dd/yy, h:mm a' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No logs -->
+  <div class="no-logs" *ngIf="!isLoading && filteredLogs.length === 0">No logs found.</div>
+</div>

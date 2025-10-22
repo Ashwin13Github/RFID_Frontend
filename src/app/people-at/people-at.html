@@ -1,0 +1,35 @@
+<div class="people-container">
+  <h2>People at Location</h2>
+
+  <div class="search-box">
+    <select [(ngModel)]="location">
+      <option value="">-- Select Location --</option>
+      <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+    </select>
+    <button (click)="onLocationSubmit()">Search</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <table *ngIf="people.length > 0" class="people-table">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>Name</th>
+        <th>Action</th>
+        <th>Location</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of people">
+        <td>{{ person.uid }}</td>
+        <td>{{ person.name || 'N/A' }}</td>
+        <td>{{ person.action }}</td>
+        <td>{{ person.location }}</td>
+        <td>{{ person.timestamp }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

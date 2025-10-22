@@ -1,0 +1,120 @@
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Heading */
+.heading {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Filter Bar */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Filter Inputs */
+.filter-input {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+/* Filter Button */
+.filter-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.filter-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Status messages */
+.status-message {
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
+  color: #555;
+}
+
+.status-message.error {
+  color: #dc3545;
+}
+
+/* Logs Table */
+.rfid-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.rfid-table th,
+.rfid-table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+}
+
+.rfid-table th {
+  background-color: #007bff;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.rfid-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Action colors */
+.rfid-table td span.entry {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.rfid-table td span.exit {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* No logs message */
+.no-logs {
+  margin-top: 20px;
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-input,
+  .filter-btn {
+    width: 100%;
+  }
+}

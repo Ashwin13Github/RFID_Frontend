@@ -1,0 +1,103 @@
+.people-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.people-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.search-box input {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  width: 250px;
+  transition: border-color 0.3s;
+}
+
+.search-box input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.search-box button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-box button:hover {
+  background-color: #0056b3;
+}
+
+.loading, .error {
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: red;
+}
+
+.people-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.people-table th, .people-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.people-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.people-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.people-table tr:hover {
+  background-color: #e6f7ff;
+}
+.search-box select {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+.search-box select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
