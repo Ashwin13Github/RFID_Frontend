@@ -1,0 +1,528 @@
+<div class="crud-container-wrapper">
+  <div class="crud-container">
+    <h2 style="color: #136dec">User Management</h2>
+
+    <div class="tabs">
+      <button [class.active]="activeTab === 'user'" (click)="activeTab = 'user'">
+        Users
+      </button>
+      <button [class.active]="activeTab === 'useruid'" (click)="activeTab = 'useruid'">
+        User UIDs
+      </button>
+      <button [class.active]="activeTab === 'designation-details'" (click)="activeTab = 'designation-details'">
+        Designation Details
+      </button>
+    </div>
+
+    <!-- ================= USER TAB CONTENT ================= -->
+    <div *ngIf="activeTab === 'user'" class="tab-content">
+      <div class="top-bar">
+        <h3>Users</h3>
+        <button class="add-btn" (click)="openUserModal()">Add New User</button>
+        <button class="add-btn" (click)="openAddUserAndUIDModal()">Add User & UID</button>
+
+        <!-- PAGE SIZE DROPDOWN -->
+        <div class="page-size-box">
+          <label>Items per page:</label>
+          <select [(ngModel)]="userItemsPerPage" (change)="changeUserItemsPerPage()">
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+          </select>
+        </div>
+
+        <!-- SORT BUTTON WITH DROPDOWN -->
+        <div class="sort-wrapper">
+          <button class="sort-btn" (click)="toggleUserSortDropdown()">Sort ⬍</button>
+
+          <div class="sort-dropdown" *ngIf="showUserSortDropdown">
+            <!-- Sort Column -->
+            <div class="sort-column">
+              <label>Sort Column:</label>
+              <ul>
+                <li *ngFor="let col of userSortColumns" (click)="setUserSortColumn(col)">
+                  {{ col.label }}
+                  <span *ngIf="userSortColumn === col.value">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Sort Direction -->
+            <div class="sort-direction">
+              <label>Direction:</label>
+              <ul>
+                <li (click)="setUserSortDirection('asc')">
+                  Ascending <span *ngIf="userSortDirection === 'asc'">✔</span>
+                </li>
+                <li (click)="setUserSortDirection('desc')">
+                  Descending <span *ngIf="userSortDirection === 'desc'">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <button class="apply-btn" (click)="applyUserSorting(); closeUserSortDropdown()">
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="userLoading" class="loading">Loading users...</div>
+
+      <table *ngIf="!userLoading && paginatedUsers.length > 0" class="rfid-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Designation ID</th>
+            <th class="action-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of paginatedUsers; let i = index">
+            <td>{{ u.userId }}</td>
+            <td>{{ u.fullName }}</td>
+            <td>{{ u.phoneNumber }}</td>
+            <td>{{ u.gender }}</td>
+            <td>{{ u.designationId }}</td>
+            <td class="action-column">
+              <div class="action-dropdown-wrapper">
+                <button class="action-btn" (click)="toggleActionDropdown('user', i, $event)">
+                  ⋮
+                </button>
+                <div
+                  class="action-dropdown"
+                  *ngIf="showActionDropdown === 'user' && activeDropdownIndex === i"
+                >
+                  <button (click)="openUserModal(u); $event.stopPropagation();">Edit</button>
+                  <button class="delete-btn" (click)="deleteUser(u.userId)">Delete</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="no-items" *ngIf="!userLoading && paginatedUsers.length == 0">No users found.</div>
+
+      <!-- PAGINATION -->
+      <div class="pagination" *ngIf="!userLoading && filteredUsers.length > userItemsPerPage">
+        <button (click)="prevUserPage()" [disabled]="currentUserPage === 1">Prev</button>
+        <button
+          *ngFor="let page of totalUserPagesArray"
+          [class.active]="page === currentUserPage"
+          (click)="goToUserPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button (click)="nextUserPage()" [disabled]="currentUserPage === totalUserPages">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= USER UID TAB CONTENT ================= -->
+    <div *ngIf="activeTab === 'useruid'" class="tab-content">
+      <div class="top-bar">
+        <h3>User UIDs</h3>
+        <button class="add-btn" (click)="openUserUIDModal()">Add New</button>
+
+        <!-- PAGE SIZE DROPDOWN -->
+        <div class="page-size-box">
+          <label>Items per page:</label>
+          <select [(ngModel)]="userUIDItemsPerPage" (change)="changeUserUIDItemsPerPage()">
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+          </select>
+        </div>
+
+        <!-- SORT BUTTON WITH DROPDOWN -->
+        <div class="sort-wrapper">
+          <button class="sort-btn" (click)="toggleUserUIDSortDropdown()">Sort ⬍</button>
+
+          <div class="sort-dropdown" *ngIf="showUserUIDSortDropdown">
+            <!-- Sort Column -->
+            <div class="sort-column">
+              <label>Sort Column:</label>
+              <ul>
+                <li *ngFor="let col of userUIDSortColumns" (click)="setUserUIDSortColumn(col)">
+                  {{ col.label }}
+                  <span *ngIf="userUIDSortColumn === col.value">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Sort Direction -->
+            <div class="sort-direction">
+              <label>Direction:</label>
+              <ul>
+                <li (click)="setUserUIDSortDirection('asc')">
+                  Ascending <span *ngIf="userUIDSortDirection === 'asc'">✔</span>
+                </li>
+                <li (click)="setUserUIDSortDirection('desc')">
+                  Descending <span *ngIf="userUIDSortDirection === 'desc'">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <button class="apply-btn" (click)="applyUserUIDSorting(); closeUserUIDSortDropdown()">
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="userUIDLoading" class="loading">Loading user UIDs...</div>
+
+      <table *ngIf="!userUIDLoading && paginatedUserUIDs.length > 0" class="rfid-table">
+        <thead>
+          <tr>
+            <th>UID</th>
+            <th>User ID</th>
+            <th>Assigned Date</th>
+            <th class="action-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of paginatedUserUIDs; let i = index">
+            <td>{{ u.uid }}</td>
+            <td>{{ u.userId }}</td>
+            <td>{{ u.assignedDate | date }}</td>
+            <td class="action-column">
+              <div class="action-dropdown-wrapper">
+                <button class="action-btn" (click)="toggleActionDropdown('useruid', i, $event)">
+                  ⋮
+                </button>
+                <div
+                  class="action-dropdown"
+                  *ngIf="showActionDropdown === 'useruid' && activeDropdownIndex === i"
+                >
+                  <button (click)="openUserUIDModal(u); $event.stopPropagation();">Edit</button>
+                  <button class="delete-btn" (click)="deleteUserUID(u.uid)">Delete</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="no-items" *ngIf="!userUIDLoading && paginatedUserUIDs.length == 0">
+        No user UIDs found.
+      </div>
+
+      <!-- PAGINATION -->
+      <div
+        class="pagination"
+        *ngIf="!userUIDLoading && filteredUserUIDs.length > userUIDItemsPerPage"
+      >
+        <button (click)="prevUserUIDPage()" [disabled]="currentUserUIDPage === 1">Prev</button>
+        <button
+          *ngFor="let page of totalUserUIDPagesArray"
+          [class.active]="page === currentUserUIDPage"
+          (click)="goToUserUIDPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button (click)="nextUserUIDPage()" [disabled]="currentUserUIDPage === totalUserUIDPages">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= DESIGNATION DETAILS TAB CONTENT ================= -->
+    <div *ngIf="activeTab === 'designation-details'" class="tab-content">
+      <div class="top-bar">
+        <h3>Designation Details</h3>
+        <button class="add-btn" (click)="openDesignationDetailModal()">Add New</button>
+
+        <!-- PAGE SIZE DROPDOWN -->
+        <div class="page-size-box">
+          <label>Items per page:</label>
+          <select [(ngModel)]="designationDetailItemsPerPage" (change)="changeDesignationDetailItemsPerPage()">
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+          </select>
+        </div>
+
+        <!-- SORT BUTTON WITH DROPDOWN -->
+        <div class="sort-wrapper">
+          <button class="sort-btn" (click)="toggleDesignationDetailSortDropdown()">Sort ⬍</button>
+
+          <div class="sort-dropdown" *ngIf="showDesignationDetailSortDropdown">
+            <!-- Sort Column -->
+            <div class="sort-column">
+              <label>Sort Column:</label>
+              <ul>
+                <li *ngFor="let col of designationDetailSortColumns" (click)="setDesignationDetailSortColumn(col)">
+                  {{ col.label }}
+                  <span *ngIf="designationDetailSortColumn === col.value">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Sort Direction -->
+            <div class="sort-direction">
+              <label>Direction:</label>
+              <ul>
+                <li (click)="setDesignationDetailSortDirection('asc')">
+                  Ascending <span *ngIf="designationDetailSortDirection === 'asc'">✔</span>
+                </li>
+                <li (click)="setDesignationDetailSortDirection('desc')">
+                  Descending <span *ngIf="designationDetailSortDirection === 'desc'">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <button class="apply-btn" (click)="applyDesignationDetailSorting(); closeDesignationDetailSortDropdown()">
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="designationDetailLoading" class="loading">Loading designation details...</div>
+
+      <table *ngIf="!designationDetailLoading && paginatedDesignationDetails.length > 0" class="rfid-table">
+        <thead>
+          <tr>
+            <th>Designation ID</th>
+            <th>Designation Name</th>
+            <th class="action-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dd of paginatedDesignationDetails; let i = index">
+            <td>{{ dd.designationId }}</td>
+            <td>{{ dd.designationName }}</td>
+            <td class="action-column">
+              <div class="action-dropdown-wrapper">
+                <button class="action-btn" (click)="toggleActionDropdown('designation-details', i, $event)">
+                  ⋮
+                </button>
+                <div
+                  class="action-dropdown"
+                  *ngIf="showActionDropdown === 'designation-details' && activeDropdownIndex === i"
+                >
+                  <button (click)="openDesignationDetailModal(dd); $event.stopPropagation();">Edit</button>
+                  <button class="delete-btn" (click)="deleteDesignation(dd.designationId)">Delete</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="no-items" *ngIf="!designationDetailLoading && paginatedDesignationDetails.length == 0">
+        No designation details found.
+      </div>
+
+      <!-- PAGINATION -->
+      <div
+        class="pagination"
+        *ngIf="!designationDetailLoading && filteredDesignationDetails.length > designationDetailItemsPerPage"
+      >
+        <button (click)="prevDesignationDetailPage()" [disabled]="currentDesignationDetailPage === 1">
+          Prev
+        </button>
+        <button
+          *ngFor="let page of totalDesignationDetailPagesArray"
+          [class.active]="page === currentDesignationDetailPage"
+          (click)="goToDesignationDetailPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button
+          (click)="nextDesignationDetailPage()"
+          [disabled]="currentDesignationDetailPage === totalDesignationDetailPages"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+<!-- User Modal -->
+<div class="modal-backdrop" *ngIf="showUserModal" (click)="closeUserModal()"></div>
+<div class="popup-modal" *ngIf="showUserModal">
+  <h4 class="modal-section-header">{{ isEditingUser ? 'Edit User' : 'Add User' }}</h4>
+  <div class="form-grid-two-column">
+    <div class="form-group">
+      <label>User ID</label>
+      <input
+        [(ngModel)]="userModel.userId"
+        placeholder="User ID"
+        type="number"
+        [disabled]="isEditingUser"
+      />
+    </div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input [(ngModel)]="userModel.fullName" placeholder="Full Name" />
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input [(ngModel)]="userModel.address" placeholder="Address" />
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input [(ngModel)]="userModel.phoneNumber" placeholder="Phone Number" />
+    </div>
+    <div class="form-group radio-group-wrapper">
+      <label>Gender</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="gender" value="M" [(ngModel)]="userModel.gender" />
+          Male
+        </label>
+        <label>
+          <input type="radio" name="gender" value="F" [(ngModel)]="userModel.gender" />
+          Female
+        </label>
+        <label>
+          <input type="radio" name="gender" value="O" [(ngModel)]="userModel.gender" />
+          Other
+        </label>
+      </div>
+    </div>
+    <div class="form-group date-input-wrapper">
+      <label>Date of Birth</label>
+      <input [(ngModel)]="userModel.dateOfBirth" type="date" />
+    </div>
+    <div class="form-group">
+      <label>Designation ID</label>
+      <input [(ngModel)]="userModel.designationId" placeholder="Designation ID" type="number" />
+    </div>
+  </div>
+  <div class="modal-actions">
+    <button class="secondary-btn" (click)="closeUserModal()">Cancel</button>
+    <button
+      class="apply-btn"
+      (click)="isEditingUser ? updateUser() : createUser()"
+      [disabled]="userLoading"
+    >
+      <span *ngIf="userLoading" class="spinner"></span>
+      {{ isEditingUser ? 'Update' : 'Create' }} User
+    </button>
+  </div>
+</div>
+
+<!-- User UID Modal -->
+<div class="modal-backdrop" *ngIf="showUserUIDModal" (click)="closeUserUIDModal()"></div>
+<div class="popup-modal" *ngIf="showUserUIDModal">
+  <h4 class="modal-section-header">{{ isEditingUserUID ? 'Edit User UID' : 'Add User UID' }}</h4>
+  <div class="form-grid-two-column">
+    <div class="form-group">
+      <label>UID</label>
+      <input [(ngModel)]="userUIDModel.uid" placeholder="UID" [disabled]="isEditingUserUID" />
+    </div>
+    <div class="form-group">
+      <label>User ID</label>
+      <input [(ngModel)]="userUIDModel.userId" placeholder="User ID" type="number" />
+    </div>
+    <div class="form-group date-input-wrapper">
+      <label>Assigned Date</label>
+      <input [(ngModel)]="userUIDModel.assignedDate" type="date" />
+    </div>
+  </div>
+  <div class="modal-actions">
+    <button class="secondary-btn" (click)="closeUserUIDModal()">Cancel</button>
+    <button
+      class="apply-btn"
+      (click)="isEditingUserUID ? updateUserUID() : createUserUID()"
+      [disabled]="userUIDLoading"
+    >
+      <span *ngIf="userUIDLoading" class="spinner"></span>
+      {{ isEditingUserUID ? 'Update' : 'Create' }} User UID
+    </button>
+  </div>
+</div>
+
+<!-- Add User and UID Modal -->
+<div class="modal-backdrop" *ngIf="showAddUserAndUIDModal" (click)="closeAddUserAndUIDModal()"></div>
+<div class="popup-modal" *ngIf="showAddUserAndUIDModal">
+  <h4 class="modal-section-header">Add New User and UID</h4>
+  <div class="form-grid-two-column">
+    <!-- User Details -->
+    <div class="form-group">
+      <label>User ID</label>
+      <input [(ngModel)]="newUserAndUIDModel.userId" placeholder="User ID" type="number" />
+    </div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input [(ngModel)]="newUserAndUIDModel.fullName" placeholder="Full Name" />
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input [(ngModel)]="newUserAndUIDModel.address" placeholder="Address" />
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input [(ngModel)]="newUserAndUIDModel.phoneNumber" placeholder="Phone Number" />
+    </div>
+    <div class="form-group radio-group-wrapper">
+      <label>Gender</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="gender" value="M" [(ngModel)]="newUserAndUIDModel.gender" />
+          Male
+        </label>
+        <label>
+          <input type="radio" name="gender" value="F" [(ngModel)]="newUserAndUIDModel.gender" />
+          Female
+        </label>
+        <label>
+          <input type="radio" name="gender" value="O" [(ngModel)]="newUserAndUIDModel.gender" />
+          Other
+        </label>
+      </div>
+    </div>
+    <div class="form-group date-input-wrapper">
+      <label>Date of Birth</label>
+      <input [(ngModel)]="newUserAndUIDModel.dateOfBirth" type="date" />
+    </div>
+    <div class="form-group">
+      <label>Designation ID</label>
+      <input [(ngModel)]="newUserAndUIDModel.designationId" placeholder="Designation ID" type="number" />
+    </div>
+
+    <!-- User UID Details -->
+    <div class="form-group">
+      <label>UID</label>
+      <input [(ngModel)]="newUserAndUIDModel.uid" placeholder="New User UID" />
+    </div>
+  </div>
+  <div class="modal-actions">
+    <button class="secondary-btn" (click)="closeAddUserAndUIDModal()">Cancel</button>
+    <button class="apply-btn" (click)="createNewUserAndUID()" [disabled]="newUserAndUIDLoading">
+      <span *ngIf="newUserAndUIDLoading" class="spinner"></span>
+      Create User & UID
+    </button>
+  </div>
+</div>
+<!-- Designation Detail Modal -->
+<div class="modal-backdrop" *ngIf="showDesignationDetailModal" (click)="closeDesignationDetailModal()"></div>
+<div class="popup-modal" *ngIf="showDesignationDetailModal">
+  <h4 class="modal-section-header">{{ isEditingDesignationDetail ? 'Edit Designation Detail' : 'Add Designation Detail' }}</h4>
+  <div class="form-grid-two-column">
+    <div class="form-group">
+      <label>Designation ID</label>
+      <input [(ngModel)]="designationDetailModel.designationId" placeholder="Designation ID" type="number" [disabled]="isEditingDesignationDetail" />
+    </div>
+    <div class="form-group">
+      <label>Designation Name</label>
+      <input [(ngModel)]="designationDetailModel.designationName" placeholder="Designation Name" />
+    </div>
+  </div>
+  <div class="modal-actions">
+    <button class="secondary-btn" (click)="closeDesignationDetailModal()">Cancel</button>
+    <button
+      class="apply-btn"
+      (click)="isEditingDesignationDetail ? updateDesignation() : createDesignation()"
+      [disabled]="designationDetailLoading"
+    >
+      <span *ngIf="designationDetailLoading" class="spinner"></span>
+      {{ isEditingDesignationDetail ? 'Update' : 'Create' }} Designation
+    </button>
+  </div>
+</div>
+

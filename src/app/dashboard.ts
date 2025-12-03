@@ -1,55 +1,59 @@
-import { Injectable } from '@angular/core';
-import * as signalR from '@microsoft/signalr';
-import { BehaviorSubject } from 'rxjs';
+// import { Injectable } from '@angular/core';
+// import * as signalR from '@microsoft/signalr';
+// import { BehaviorSubject } from 'rxjs';
 
-export interface RfidLog {
-  uid: string;
-  location: string;
-  action: string;
-  timestamp: string;
-}
+// export interface RfidLog {
+//   uid: string;
+//   fullName: string;
+//   location: string;
+//   action: string;
+//   timestamp: string;
+//   designation: string;
+//   classOrDept: string;
+// }
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RfidSignalrService {
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class RfidSignalrService {
 
-  private hubConnection!: signalR.HubConnection;
+//   private hubConnection!: signalR.HubConnection;
 
-  // Observable to hold logs
-  private logsSubject = new BehaviorSubject<RfidLog[]>([]);
-  logs$ = this.logsSubject.asObservable();
+//   // Observable to hold logs
+//   private logsSubject = new BehaviorSubject<RfidLog[]>([]);
+//   logs$ = this.logsSubject.asObservable();
 
-  constructor() {
-    this.startConnection();
-  }
+//   constructor() {
+//     this.startConnection();
+//   }
 
-  private startConnection() {
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:44372/rfidHub', { transport: signalR.HttpTransportType.WebSockets })
-      .withAutomaticReconnect()
-      .build();
 
-    this.hubConnection.start()
-      .then(() => console.log(' Connected to SignalR Hub'))
-      .catch(err => console.error(' SignalR Connection Error:', err));
+//   private startConnection() {
+//     this.hubConnection = new signalR.HubConnectionBuilder()
+//       .withUrl('http://rfid-app.runasp.net/rfidHub', { transport: signalR.HttpTransportType.WebSockets })
+//       .withAutomaticReconnect()
+//       .build();
 
-    this.hubConnection.on('ReceiveRfidUpdate', (data: RfidLog) => {
-      console.log(' New RFID Update:', data);
+//     this.hubConnection.start()
+//       .then(() => console.log(' Connected to SignalR Hub'))
+//       .catch(err => console.error(' SignalR Connection Error:', err));
+
+//     this.hubConnection.on('ReceiveRfidUpdate', (data: RfidLog) => {
+//       console.log(' New RFID Update:', data);
 
       
-      const currentLogs = this.logsSubject.value;
+//       const currentLogs = this.logsSubject.value;
 
      
-      this.logsSubject.next([...currentLogs, data]);
+//       this.logsSubject.next([...currentLogs, data]);
 
-      localStorage.setItem('rfidLogs', JSON.stringify([...currentLogs, data]));
-    });
+//       localStorage.setItem('rfidLogs', JSON.stringify([...currentLogs, data]));
+//     });
 
 
-    const storedLogs = localStorage.getItem('rfidLogs');
-    if (storedLogs) {
-      this.logsSubject.next(JSON.parse(storedLogs));
-    }
-  }
-}
+//     const storedLogs = localStorage.getItem('rfidLogs');
+//     if (storedLogs) {
+//       this.logsSubject.next(JSON.parse(storedLogs));
+//     }
+//   }
+// }

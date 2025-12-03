@@ -1,0 +1,49 @@
+<div class="Login_page">
+  <div class="left-section">
+    <div class="left-content">
+      <h1 class="logo">RFID</h1>
+      <img src="Layer_2.png" alt="Coding Illustration" class="coding-illustration" />
+      <h2 class="title">
+        Secure & Automated<br />
+        Campus Monitoring
+      </h2>
+      <ul class="features">
+        <li>Real-Time Tracking</li>
+        <li>Automated Attendance</li>
+        <li>Admin Controlled Access</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <h2 class="login-title">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" class="login-form">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" placeholder="example@email.com" />
+
+      <label for="password">Password</label>
+      <div class="password-wrap">
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="************"
+        />
+        <span class="eye" (click)="togglePassword()"><i class="bi bi-eye-slash"></i></span>
+      </div>
+
+      <div class="remember d-flex justify-content-between">
+        <div class="d-flex">
+          <input id="remember" type="checkbox" formControlName="remember" />
+          <label for="remember">Remember Me</label>
+        </div>
+        <button type="submit" class="login-btn">LOGIN</button>
+      </div>
+
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+      <p class="signup-text">No Account Yet? <a href="#">Sign Up</a></p>
+    </form>
+  </div>
+</div>

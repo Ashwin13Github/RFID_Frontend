@@ -1,0 +1,63 @@
+<h2 style="color: #136dec">Asset Theft Alerts</h2>
+
+<div class="status success" *ngIf="message">{{ message }}</div>
+<div class="status error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Alert ID</th>
+      <th>Asset</th>
+      <th>Reader</th>
+      <th>Message</th>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let a of alerts">
+      <td>{{ a.alertId }}</td>
+      <td>{{ a.assetName }}</td>
+      <td>{{ a.readerId }}</td>
+      <td>{{ a.alertMessage }}</td>
+      <td>{{ a.alertTime | date : 'short' }}</td>
+      <td>
+        <span
+          class="badge"
+          [ngClass]="{
+            open: a.status === 'Open',
+            review: a.status === 'Under Review',
+            resolved: a.status === 'Resolved'
+          }"
+        >
+          {{ a.status }}
+        </span>
+      </td>
+      <td>
+        <button class="btn" (click)="selectAlert(a)">Update</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Status Update Panel -->
+<div *ngIf="selectedAlertId" class="update-box">
+  <h3>Update Alert Status</h3>
+
+  <label>Status</label>
+  <select [(ngModel)]="newStatus">
+    <option value="Open">Open</option>
+    <option value="Under Review">Under Review</option>
+    <option value="Resolved">Resolved</option>
+  </select>
+
+  <label>Comments</label>
+  <textarea [(ngModel)]="comments"></textarea>
+
+  <div class="btn-group">
+    <button class="btn save" (click)="updateStatus()">Save</button>
+    <button class="btn cancel" (click)="selectedAlertId = null">Cancel</button>
+  </div>
+</div>

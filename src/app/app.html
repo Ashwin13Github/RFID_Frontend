@@ -1,10 +1,86 @@
-<div class="div">
-  <nav class="navbar">
-    <a routerLink="/Home">Home</a>
-    <!-- <a routerLink="/dashboard">Dashboard</a> -->
-    <a routerLink="/Filter">Filter</a>
-    <a routerLink="/People-At">People-At</a>
-    <!-- <a routerLink="/RfidLogs">RFID Logs</a> -->
-    <router-outlet></router-outlet>
-  </nav>
+<!-- app.html -->
+<header class="app-header" *ngIf="isLoggedIn && showNavbar">
+  <button class="sidebar-toggle-btn" (click)="toggleSidebar()">
+    &#9776;
+    <!-- Hamburger icon -->
+  </button>
+  <div class="header-icons">
+    <button class="icon-button" (click)="navigateTo('/settings')">
+      <i class="bi bi-gear"></i>
+    </button>
+    <div class="profile-dropdown-container">
+      <button class="icon-button" (click)="toggleProfileDropdown()">
+        <i class="bi bi-person-circle"></i>
+      </button>
+      <div class="profile-dropdown" [class.show]="showProfileDropdown">
+        <div *ngIf="userDetails" class="user-details">
+          <p><strong>Username:</strong> {{ userDetails.fullName }}</p>
+          <p><strong>Email:</strong> {{ userDetails.email }}</p>
+          <!-- Add other user details as needed -->
+        </div>
+        <button class="logout-button" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div *ngIf="isLoggedIn && showNavbar" class="sidebar-container">
+  <div class="sidebar" [class.open]="showSidebar">
+    <img src="Company.png" alt="Class Logo" class="Company-Logo" />
+    <div class="sidebar-links">
+      <a routerLink="/Home" (click)="toggleSidebar()">Home</a>
+      <!-- Logs with sub-options -->
+      <div class="sidebar-sub-menu">
+        <a class="sidebar-main-link" (click)="toggleLogsSubMenu()"
+          >Logs <span class="arrow" [class.open]="showLogsSubMenu"></span
+        ></a>
+        <div class="sidebar-sub-links" [class.open]="showLogsSubMenu">
+          <a routerLink="/Filter" (click)="toggleSidebar()">Activity Log</a>
+          <a routerLink="/People-At" (click)="toggleSidebar()">Location</a>
+          <a routerLink="/Attendance" (click)="toggleSidebar()">Attendance</a>
+        </div>
+      </div>
+      <!-- User Details with sub-options -->
+      <div class="sidebar-sub-menu">
+        <a class="sidebar-main-link" (click)="toggleUserDetailsSubMenu()"
+          >User Management <span class="arrow" [class.open]="showUserDetailsSubMenu"></span
+        ></a>
+        <div class="sidebar-sub-links" [class.open]="showUserDetailsSubMenu">
+          <a routerLink="/User Details" routerLinkActive="active" (click)="toggleSidebar()"
+            >User Details</a
+          >
+          <a routerLink="/Access Control" (click)="toggleSidebar()">Access Control</a>
+          <a routerLink="/Class Manager" (click)="toggleSidebar()">Class Manager</a>
+        </div>
+      </div>
+      <!-- Reports with sub-options -->
+      <div class="sidebar-sub-menu">
+        <a class="sidebar-main-link" (click)="toggleReportsSubMenu()"
+          >Reports <span class="arrow" [class.open]="showReportsSubMenu"></span
+        ></a>
+        <div class="sidebar-sub-links" [class.open]="showReportsSubMenu">
+          <a routerLink="/Reports" [queryParams]="{ type: 'overall' }" (click)="toggleSidebar()"
+            >Overall Attendance</a
+          >
+          <a routerLink="/Reports" [queryParams]="{ type: 'classwise' }" (click)="toggleSidebar()"
+            >Class-wise Attendance</a
+          >
+        </div>
+      </div>
+      <a routerLink="/settings" (click)="toggleSidebar()">Settings</a>
+      <a routerLink="/UserWallet" (click)="toggleSidebar()">WalletPay</a>
+      <a routerLink="/Canteen" (click)="toggleSidebar()">Canteen</a>
+      <a routerLink="/Library" (click)="toggleSidebar()">Library</a>
+      <a routerLink="/Asset Management" (click)="toggleSidebar()">Asset Management</a>
+    </div>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>
+<div
+  class="main-content"
+  [class.sidebar-open]="isLoggedIn && showSidebar && showSidebar"
+  [class.has-header-margin]="applyMainContentMargin"
+>
+  <router-outlet></router-outlet>
+  <lib-toastify-toast-container></lib-toastify-toast-container>
 </div>

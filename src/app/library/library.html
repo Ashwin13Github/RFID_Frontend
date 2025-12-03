@@ -1,0 +1,223 @@
+<div class="library-container">
+  <h1 class="page-title">Library Management System</h1>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button (click)="activeTab = 'issue'" [class.active]="activeTab === 'issue'">Issue Book</button>
+    <button (click)="activeTab = 'return'" [class.active]="activeTab === 'return'">
+      Return Book
+    </button>
+    <button (click)="activeTab = 'search'" [class.active]="activeTab === 'search'">
+      Search Books
+    </button>
+    <button (click)="activeTab = 'details'" [class.active]="activeTab === 'details'">
+      Book Details
+    </button>
+    <button (click)="activeTab = 'overdue'" [class.active]="activeTab === 'overdue'">
+      Overdue Books
+    </button>
+  </div>
+
+  <!-- ISSUE BOOK -->
+  <div *ngIf="activeTab === 'issue'" class="tab-content">
+    <h2>Issue Book</h2>
+
+    <div class="form">
+      <label for="issueBookId">Book ID:</label>
+      <input
+        id="issueBookId"
+        type="number"
+        placeholder="Enter Book ID"
+        [(ngModel)]="issue.bookId"
+      />
+
+      <label for="issueCopyId">Copy ID:</label>
+      <input
+        id="issueCopyId"
+        type="number"
+        placeholder="Enter Copy ID"
+        [(ngModel)]="issue.copyId"
+      />
+
+      <label for="issueUserId">User ID:</label>
+      <input
+        id="issueUserId"
+        type="number"
+        placeholder="Enter User ID"
+        [(ngModel)]="issue.userId"
+      />
+
+      <label for="issueUserUID">User UID:</label>
+      <input
+        id="issueUserUID"
+        type="text"
+        placeholder="Enter User UID"
+        [(ngModel)]="issue.userUID"
+      />
+
+      <button (click)="issueBook()">Issue Book</button>
+
+      <p class="response" *ngIf="issueMsg">{{ issueMsg }}</p>
+    </div>
+  </div>
+
+  <!-- RETURN BOOK -->
+  <!-- RETURN BOOK TAB -->
+  <div *ngIf="activeTab === 'return'" class="tab-content form">
+    <h2>Return Book</h2>
+
+    <label for="returnBookUID">Book UID:</label>
+    <input
+      id="returnBookUID"
+      type="text"
+      [(ngModel)]="returnReq.book_UID"
+      placeholder="Enter Book UID"
+    />
+
+    <label for="returnBookId">Book ID:</label>
+    <input
+      id="returnBookId"
+      type="number"
+      [(ngModel)]="returnReq.bookId"
+      placeholder="Enter Book ID"
+    />
+
+    <label for="returnCopyId">Copy ID:</label>
+    <input
+      id="returnCopyId"
+      type="number"
+      [(ngModel)]="returnReq.copyId"
+      placeholder="Enter Copy ID"
+    />
+
+    <button (click)="returnBook()">Return Book</button>
+
+    <div class="response success" *ngIf="returnMsg">{{ returnMsg }}</div>
+  </div>
+  <!-- SEARCH BOOKS -->
+  <div *ngIf="activeTab === 'search'" class="tab-content">
+    <h2>Search Books</h2>
+
+    <div class="search-form">
+      <label for="searchTitle">Title:</label>
+      <input id="searchTitle" type="text" placeholder="Enter Title" [(ngModel)]="search.title" />
+
+      <label for="searchAuthor">Author:</label>
+      <input id="searchAuthor" type="text" placeholder="Enter Author" [(ngModel)]="search.author" />
+
+      <label for="searchCategory">Category:</label>
+      <input
+        id="searchCategory"
+        type="text"
+        placeholder="Enter Category"
+        [(ngModel)]="search.category"
+      />
+
+      <label for="searchISBN">ISBN:</label>
+      <input id="searchISBN" type="text" placeholder="Enter ISBN" [(ngModel)]="search.isbn" />
+
+      <label for="searchPublisher">Publisher:</label>
+      <input
+        id="searchPublisher"
+        type="text"
+        placeholder="Enter Publisher"
+        [(ngModel)]="search.publisher"
+      />
+      <button (click)="searchBooks()">Search</button>
+    </div>
+
+    <!-- Results -->
+    <table class="results-table" *ngIf="searchResults.length > 0">
+      <thead>
+        <tr>
+          <th>Book ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Category</th>
+          <th>ISBN</th>
+          <th>Publisher</th>
+          <th>Total Copies</th>
+          <th>Available</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let b of searchResults">
+          <td>{{ b.bookId }}</td>
+          <td>{{ b.title }}</td>
+          <td>{{ b.author }}</td>
+          <td>{{ b.category }}</td>
+          <td>{{ b.isbn }}</td>
+          <td>{{ b.publisher }}</td>
+          <td>{{ b.totalCopies }}</td>
+          <td [class.low]="b.availableCopies == 0">{{ b.availableCopies }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BOOK DETAILS -->
+  <div *ngIf="activeTab === 'details'" class="tab-content form">
+    <h2>Book Details</h2>
+
+    <label for="bookDetailsId">Book ID:</label>
+    <input id="bookDetailsId" type="number" placeholder="Enter Book ID" [(ngModel)]="bookId" />
+    <button (click)="getBookDetails()">Get Details</button>
+
+    <div *ngIf="bookDetails" class="details-box">
+      <p><strong>Title:</strong> {{ bookDetails.details.title }}</p>
+      <p><strong>Author:</strong> {{ bookDetails.details.author }}</p>
+      <p><strong>Category:</strong> {{ bookDetails.details.category }}</p>
+      <p><strong>ISBN:</strong> {{ bookDetails.details.isbn }}</p>
+      <p><strong>Publisher:</strong> {{ bookDetails.details.publisher }}</p>
+      <p><strong>Total Copies:</strong> {{ bookDetails.availability.totalCopies }}</p>
+      <p><strong>Available:</strong> {{ bookDetails.availability.availableCopies }}</p>
+      <p><strong>Issued Copies:</strong> {{ bookDetails.availability.issuedCopies }}</p>
+    </div>
+  </div>
+
+  <!-- OVERDUE BOOKS -->
+  <div *ngIf="activeTab === 'overdue'" class="tab-content">
+    <h2>Overdue Books</h2>
+
+    <table class="results-table" *ngIf="overdueBooks.length > 0">
+      <thead>
+        <tr>
+          <th>Overdue ID</th>
+          <th>Issue ID</th>
+          <th>User ID</th>
+          <th>User UID</th>
+          <th>Copy ID</th>
+          <th>Book UID</th>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Borrow Date</th>
+          <th>Due Date</th>
+          <th>Overdue Days</th>
+          <th>Status</th>
+          <th>Return Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let o of overdueBooks">
+          <td>{{ o.overdueId }}</td>
+          <td>{{ o.issueId }}</td>
+          <td>{{ o.userId }}</td>
+          <td>{{ o.userUID }}</td>
+          <td>{{ o.copyId }}</td>
+          <td>{{ o.book_UID }}</td>
+          <td>{{ o.isbn }}</td>
+          <td>{{ o.title }}</td>
+          <td>{{ o.borrowDate }}</td>
+          <td>{{ o.dueDate }}</td>
+          <td>{{ o.overdueDays }}</td>
+          <td>{{ o.status }}</td>
+          <td>{{ o.returnDate }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="no-data" *ngIf="overdueBooks.length === 0">No overdue books found.</p>
+  </div>
+</div>

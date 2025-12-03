@@ -1,0 +1,82 @@
+<div class="container mt-4 canteen-container">
+  <h2 class="title" style="color: #136dec;">Canteen Menu</h2>
+
+  <!-- USER INPUT -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <label>User UID</label>
+      <input type="text" class="form-control" [(ngModel)]="payerId" readonly />
+    </div>
+
+    <div class="col-md-4">
+      <label>Receiver UID</label>
+      <input type="text" class="form-control" [(ngModel)]="receiverId" />
+    </div>
+
+    <div class="col-md-4">
+      <label>Total Amount</label>
+      <input type="number" class="form-control" [value]="totalAmount" />
+    </div>
+  </div>
+
+  <hr />
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Price (₹)</th>
+        <th>Add</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of menuItems">
+        <td>{{ item.itemName }}</td>
+        <td>{{ item.price }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="addItem(item)">Add</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <!-- SELECTED ITEMS WITH QUANTITY -->
+  <h3>Selected Items</h3>
+
+  <table class="table table-striped" *ngIf="selectedItems.length > 0">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Price (₹)</th>
+        <th>Qty</th>
+        <th>Subtotal (₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of selectedItems">
+        <td>{{ s.itemName }}</td>
+        <td>{{ s.price }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="decreaseQty(s)">-</button>
+
+          <span class="mx-2">{{ s.quantity }}</span>
+
+          <button class="btn btn-success btn-sm" (click)="increaseQty(s)">+</button>
+        </td>
+
+        <td>{{ s.price * s.quantity }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="total">Total Amount: ₹{{ totalAmount }}</h3>
+
+  <button
+    class="btn btn-success btn-lg mt-3"
+    [disabled]="totalAmount === 0 || !payerId || !receiverId"
+    (click)="makePurchase()">
+    Make Purchase
+  </button>
+</div>

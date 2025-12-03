@@ -1,0 +1,408 @@
+.crud-container-wrapper {
+  margin: 30px auto;
+  padding: 25px 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: initial;
+}
+
+.crud-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* --- TABS --- */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #e9ecef;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tabs button:hover {
+  background: #007bff;
+  color: white;
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* --- TOP BAR (for each tab content) --- */
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  justify-content: flex-end; /* Aligns content to the right */
+}
+
+.top-bar h3 {
+  margin-right: auto; /* Pushes the h3 to the left */
+  color: #333;
+}
+
+.top-bar .add-btn {
+  background: #28a745;
+  color: #fff;
+  padding: 9px 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.top-bar .add-btn:hover {
+  background: #218838;
+}
+
+/* ================= PAGE SIZE PANEL ================= */
+.page-size-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-size-box label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.page-size-box select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ================= SORT DROPDOWN ================= */
+.sort-wrapper {
+  position: relative;
+}
+
+.sort-btn {
+  background: #17a2b8;
+  color: #fff;
+  padding: 9px 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.sort-btn:hover {
+  background: #0e7b8c;
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  padding: 12px 15px;
+  z-index: 50;
+  font-size: 14px;
+}
+
+.sort-dropdown label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sort-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 10px 0;
+}
+
+.sort-dropdown ul li {
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-dropdown ul li:hover {
+  background: #f1f1f1;
+}
+
+.sort-dropdown ul li span {
+  float: right;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* --- TABLE --- */
+.rfid-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: visible;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.rfid-table th, .rfid-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.rfid-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.rfid-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.rfid-table tr:hover {
+  background-color: #e6f7ff;
+}
+
+.no-items {
+  text-align: center;
+  padding: 25px;
+  font-size: 16px;
+  color: #777;
+  margin-top: 20px;
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  background: #0056b3;
+}
+
+.pagination button.active {
+  background: #0056b3;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* --- BUTTONS --- */
+button {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button.apply-btn {
+  background: #28a745;
+  color: #fff;
+}
+.apply-btn:hover {
+  background: #218838;
+}
+
+button.close-btn {
+  background: #dc3545;
+  color: #fff;
+}
+.close-btn:hover {
+  background: #b02a37;
+}
+
+button:not(.delete):not(.cancel):not(.apply-btn):not(.close-btn):not(.sort-btn):not(.add-btn) {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+button.delete {
+  background: linear-gradient(135deg, #dc3545, #b71c1c);
+  color: white;
+}
+
+button.delete:hover {
+  box-shadow: 0 3px 8px rgba(220, 53, 69, 0.4);
+}
+
+button.cancel {
+  background: #6c757d;
+  color: white;
+}
+
+button.cancel:hover {
+  background: #5a6268;
+}
+
+/* --- MODALS --- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  z-index: 999;
+}
+
+.popup-modal {
+  position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 450px; /* Increased width to make it more square */
+    max-width: 95%;
+    background: #fff;
+    padding: 25px 20px;
+    border-radius: 12px;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out;
+  /* Removed display: flex, flex-direction: column, align-items: center */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.85) translate(-50%, -50%); }
+  to { opacity: 1; transform: scale(1) translate(-50%, -50%); }
+}
+
+.popup-modal h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.6em;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, .form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.radio-group {
+  display: flex;
+  gap: 15px; /* Added gap for spacing between radio buttons */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-grid-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 20px; /* Adjust gap for better spacing */
+}
+
+/* --- STATUS MESSAGES --- */
+.loading, .error {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: row; /* Keep elements in a row even on small screens */
+    align-items: center;
+    justify-content: flex-end; /* Adjust to keep elements aligned to the right */
+  }
+
+  .top-bar h3 {
+    margin-right: auto;
+  }
+
+  .page-size-box, .sort-wrapper {
+    margin-top: 0; /* Remove extra top margin */
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+  }
+
+  .tabs button {
+    flex-grow: 1;
+  }
+
+  .popup-modal {
+    width: 90%;
+  }
+}

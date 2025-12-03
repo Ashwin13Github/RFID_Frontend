@@ -1,0 +1,96 @@
+<div class="container">
+  <h2 style="color: #136dec">Attendance Report</h2>
+
+  <div class="top-bar">
+    <div class="search-section">
+      <input type="text" [(ngModel)]="uid" placeholder="Enter UID" />
+      <input type="date" [(ngModel)]="date" />
+      <button (click)="search()">Search</button>
+    </div>
+
+    <div class="page-size-box">
+      <label>Records per page:</label>
+      <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+        <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+      </select>
+    </div>
+
+    <div class="sort-wrapper">
+      <button class="sort-btn" (click)="toggleSortDropdown()">Sort ⬍</button>
+      <div class="sort-dropdown" *ngIf="showSortDropdown">
+        <div class="sort-column">
+          <label>Sort Column:</label>
+          <ul>
+            <li *ngFor="let col of sortColumns" (click)="setSortColumn(col)">
+              {{ col.label }}
+              <span *ngIf="sortColumn === col.value">✔</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sort-direction">
+          <label>Direction:</label>
+          <ul>
+            <li (click)="setSortDirection('asc')">
+              Ascending <span *ngIf="sortDirection === 'asc'">✔</span>
+            </li>
+            <li (click)="setSortDirection('desc')">
+              Descending <span *ngIf="sortDirection === 'desc'">✔</span>
+            </li>
+          </ul>
+        </div>
+
+        <button class="apply-btn" (click)="applySorting(); closeSortDropdown()">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="message" class="error">{{ message }}</div>
+
+  <table *ngIf="paginatedRecords.length > 0" class="rfid-table">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>UID</th>
+        <th>Full Name</th>
+        <th>Designation</th>
+        <th>Date</th>
+        <th>First In</th>
+        <th>Last Out</th>
+        <th>Total Worked Time</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let record of paginatedRecords">
+        <td>{{ record.userId }}</td>
+        <td>{{ record.uid }}</td>
+        <td>{{ record.fullName }}</td>
+        <td>{{ record.designation || '-' }}</td>
+        <td>{{ record.attendanceDate | date : 'mediumDate' }}</td>
+        <td>{{ record.firstIn | date : 'shortTime' }}</td>
+        <td>{{ record.lastOut | date : 'shortTime' }}</td>
+
+        <td [ngClass]="getHoursClass(record.totalWorkedTime)">
+          {{ record.totalWorkedTime }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="no-records" *ngIf="paginatedRecords.length == 0">No records found.</div>
+
+  <div class="pagination" *ngIf="filteredRecords.length > itemsPerPage">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+
+    <button
+      *ngFor="let page of totalPagesArray"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="crud-container-wrapper">
+  <div class="crud-container">
+    <h2 style="color: #136dec">Access Permissions</h2>
+
+    <div class="top-bar">
+      <h3 style="color: #136dec">Manage Permissions</h3>
+      <button class="add-btn" (click)="openPermissionModal()">Add New</button>
+
+      <!-- PAGE SIZE DROPDOWN -->
+      <div class="page-size-box">
+        <label>Items per page:</label>
+        <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+          <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+        </select>
+      </div>
+
+      <!-- SORT BUTTON WITH DROPDOWN -->
+      <div class="sort-wrapper">
+        <button class="sort-btn" (click)="toggleSortDropdown()">Sort ⬍</button>
+
+        <div class="sort-dropdown" *ngIf="showSortDropdown">
+          <!-- Sort Column -->
+          <div class="sort-column">
+            <label>Sort Column:</label>
+            <ul>
+              <li *ngFor="let col of sortColumns" (click)="setSortColumn(col)">
+                {{ col.label }}
+                <span *ngIf="sortColumn === col.value">✔</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sort Direction -->
+          <div class="sort-direction">
+            <label>Direction:</label>
+            <ul>
+              <li (click)="setSortDirection('asc')">
+                Ascending <span *ngIf="sortDirection === 'asc'">✔</span>
+              </li>
+              <li (click)="setSortDirection('desc')">
+                Descending <span *ngIf="sortDirection === 'desc'">✔</span>
+              </li>
+            </ul>
+          </div>
+
+          <button class="apply-btn" (click)="applySorting(); closeSortDropdown()">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Loading permissions...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <table *ngIf="!isLoading && paginatedPermissions.length > 0" class="rfid-table">
+      <thead>
+        <tr>
+          <th>PermissionId</th>
+          <th>Designation</th>
+          
+          <th>Location</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of paginatedPermissions">
+          <td>{{ p.permissionId }}</td>
+          <td>{{ p.designationName || p.designationId }}</td>
+          
+          <td>{{ p.locationName || p.accessPointId }}</td>
+          <td>{{ p.isActive ? 'Yes' : 'No' }}</td>
+          <td>
+            <button (click)="edit(p)">Edit</button>
+            <button class="delete" (click)="delete(p.permissionId!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="no-items" *ngIf="!isLoading && paginatedPermissions.length == 0">
+      No permissions found.
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" *ngIf="!isLoading && filteredPermissions.length > itemsPerPage">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+      <button
+        *ngFor="let page of totalPagesArray"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+<div class="modal-backdrop" *ngIf="showPermissionModal"></div>
+<div class="popup-modal" *ngIf="showPermissionModal">
+  <h4>{{ editMode ? 'Edit Permission' : 'Create Permission' }}</h4>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="form-group">
+      <label for="designationId">Designation Id</label>
+      <input id="designationId" type="number" formControlName="designationId" required />
+    </div>
+
+    
+
+    <div class="form-group">
+      <label for="accessPointId">Access Point Id</label>
+      <input id="accessPointId" type="number" formControlName="accessPointId" required />
+    </div>
+
+    <div class="form-group checkbox-group">
+      <input id="isActive" type="checkbox" formControlName="isActive" />
+      <label for="isActive">Active</label>
+    </div>
+
+    <div class="modal-actions">
+      <button type="submit" class="apply-btn">{{ editMode ? 'Update' : 'Create' }}</button>
+      <button type="button" class="close-btn" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

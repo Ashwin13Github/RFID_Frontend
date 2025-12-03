@@ -1,0 +1,120 @@
+<div class="settings-page">
+  <h1 class="page-title">Settings</h1>
+
+  <div class="settings-grid">
+    <!-- User Details -->
+    <div *ngIf="userDetails" class="settings-card">
+      <h2 class="settings-card-title">User Information</h2>
+      <div class="form-group">
+        <label>Email:</label>
+        <p class="detail-value">{{ userDetails.email }}</p>
+      </div>
+      <div class="form-group">
+        <label>Full Name:</label>
+        <p class="detail-value">{{ userDetails.fullName }}</p>
+      </div>
+      <div class="form-group">
+        <label>Designation:</label>
+        <p class="detail-value">{{ userDetails.designationName }}</p>
+      </div>
+      <div class="form-group">
+        <label>Date of Birth:</label>
+        <p class="detail-value">{{ userDetails.dateOfBirth | date : 'mediumDate' }}</p>
+      </div>
+      <div class="form-group">
+        <label>User ID:</label>
+        <p class="detail-value">{{ userDetails.id }}</p>
+      </div>
+      <!-- Add other user details here as needed -->
+    </div>
+
+    <div class="settings-cards-group">
+      <!-- CHANGE PASSWORD -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">Change Password</h2>
+
+        <div class="form-group">
+          <label for="current-password">Current Password</label>
+          <input
+            id="current-password"
+            type="password"
+            [(ngModel)]="changePwd.currentPassword"
+            placeholder="Enter current password"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="new-password">New Password</label>
+          <input
+            id="new-password"
+            type="password"
+            [(ngModel)]="changePwd.newPassword"
+            placeholder="Enter new password"
+            class="form-input"
+          />
+        </div>
+
+        <button (click)="changePassword()" class="settings-btn primary-btn">Change Password</button>
+      </div>
+
+      <!-- REQUEST OTP -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">Request OTP</h2>
+
+        <div class="form-group">
+          <label for="otp-request-email">Email</label>
+          <input
+            id="otp-request-email"
+            type="email"
+            [(ngModel)]="otpRequest.email"
+            placeholder="Enter your email"
+            class="form-input"
+          />
+        </div>
+
+        <button (click)="requestOtp()" class="settings-btn secondary-btn">Send OTP</button>
+      </div>
+
+      <!-- VERIFY OTP -->
+      <div class="settings-card">
+        <h2 class="settings-card-title">Verify OTP & Reset Password</h2>
+
+        <div class="form-group">
+          <label for="otp-verify-email">Email</label>
+          <input
+            id="otp-verify-email"
+            type="email"
+            [(ngModel)]="otpVerify.email"
+            placeholder="Enter your email"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="otp">OTP</label>
+          <input
+            id="otp"
+            type="text"
+            [(ngModel)]="otpVerify.otp"
+            placeholder="Enter OTP"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="otp-new-password">New Password</label>
+          <input
+            id="otp-new-password"
+            type="password"
+            [(ngModel)]="otpVerify.newPassword"
+            placeholder="Enter new password"
+            class="form-input"
+          />
+        </div>
+
+        <button (click)="verifyOtp()" class="settings-btn primary-btn">Verify & Reset</button>
+      </div>
+    </div>
+  </div>
+</div>

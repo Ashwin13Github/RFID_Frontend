@@ -1,0 +1,180 @@
+<div class="crud-container-wrapper">
+  <div class="crud-container">
+    <h2 style="color: #136dec;">Attendance Reports</h2>
+
+    <!-- The toggle buttons are removed as selection is now done via sidebar -->
+
+    <!-- Overall Attendance Section -->
+    <div class="report-section" *ngIf="currentReportType === 'overall'">
+      <h3>Overall Attendance Report</h3>
+      <div class="top-bar">
+        <div class="form-group">
+          <label for="reportDate">Select Date:</label>
+          <input id="reportDate" type="date" [formControl]="dateControl" class="form-control">
+        </div>
+        <button (click)="fetchData()" class="apply-btn" [disabled]="overallIsLoading">Fetch Report</button>
+      </div>
+
+      <div *ngIf="overallErrorMessage" class="error">{{ overallErrorMessage }}</div>
+      <div *ngIf="overallIsLoading" class="loading">Loading overall attendance data...</div>
+
+      <div *ngIf="!overallIsLoading && !overallErrorMessage" class="charts-grid">
+        <div class="chart-card">
+          <h3>Present vs Absent (Overall Pie Chart)</h3>
+          <div class="chart-container">
+            <canvas baseChart
+                    [data]="overallPieChartData"
+                    [options]="chartOptions"
+                    [type]="'pie'">
+            </canvas>
+          </div>
+          <div class="chart-summary">
+            <p><strong>Present:</strong> <span class="present-count">{{ overallPresentCount }}</span></p>
+            <p><strong>Absent:</strong> <span class="absent-count">{{ overallAbsentCount }}</span></p>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3>Attendance Overview (Overall Bar Chart)</h3>
+          <div class="chart-container">
+            <canvas baseChart
+                    [data]="overallBarChartData"
+                    [options]="chartOptions"
+                    [type]="'bar'">
+            </canvas>
+          </div>
+          <div class="chart-summary">
+            <p><strong>Total:</strong> {{ overallPresentCount + overallAbsentCount }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!overallIsLoading && !overallErrorMessage && (overallPresentCount > 0 || overallAbsentCount > 0)" class="designation-summary">
+        <h3>Attendance by Designation</h3>
+        <div class="designation-list">
+          <div *ngFor="let designationKey of (designationAttendance | keyvalue)" class="designation-item">
+            <div class="designation-name" (click)="onDesignationClick(designationKey.key)">{{ designationKey.key }}</div>
+            <div class="designation-count">
+              <span class="present-count">{{ designationKey.value.present }}</span>
+              / {{ designationKey.value.total }} present
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!overallIsLoading && !overallErrorMessage && (overallPresentCount === 0 && overallAbsentCount === 0)" class="no-data-message">
+        <p>No overall attendance data available for the selected date.</p>
+      </div>
+    </div>
+
+    <hr class="report-divider" *ngIf="currentReportType === 'overall' || currentReportType === 'classwise'">
+
+    <!-- Class-wise Attendance Section -->
+    <div class="report-section" *ngIf="currentReportType === 'classwise'">
+      <h3>Class-wise Attendance Report</h3>
+      <div class="top-bar">
+        <div class="form-group">
+          <label for="className">Class Name:</label>
+          <input
+            id="className"
+            type="text"
+            placeholder="Enter Class Name"
+            [formControl]="classControl"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label for="classWiseDate">Date:</label>
+          <input id="classWiseDate" type="date" [formControl]="classWiseDateControl" class="form-control" />
+        </div>
+        <button (click)="fetchData()" class="apply-btn" [disabled]="classWiseIsLoading">Fetch Report</button>
+      </div>
+
+      <div *ngIf="classWiseErrorMessage" class="error">{{ classWiseErrorMessage }}</div>
+      <div *ngIf="classWiseIsLoading" class="loading">Loading class-wise attendance data...</div>
+
+      <div class="content-grid" *ngIf="!classWiseIsLoading && !classWiseErrorMessage">
+        <!-- LEFT SIDE: CHARTS -->
+        <div class="chart-card">
+          <h3>Attendance Charts</h3>
+
+          <div class="chart-wrapper">
+            <div class="chart">
+              <h4>Pie Chart</h4>
+              <canvas baseChart [data]="classWisePieChartData" [options]="chartOptions" [type]="'pie'">
+              </canvas>
+            </div>
+
+            <div class="chart">
+              <h4>Bar Chart</h4>
+              <canvas baseChart [data]="classWiseBarChartData" [options]="chartOptions" [type]="'bar'">
+              </canvas>
+            </div>
+          </div>
+
+          <div class="chart-summary">
+            <p>Total Students: {{ classWiseTotalStudents }}</p>
+            <p class="present-count">Present: {{ classWisePresentList.length }}</p>
+            <p class="absent-count">Absent: {{ classWiseAbsentList.length }}</p>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: STUDENT LIST -->
+        <div class="list-card">
+          <h3>Student Status</h3>
+
+          <!-- PRESENT LIST -->
+          <div class="present-box">
+            <h4>Present ({{ classWisePresentList.length }})</h4>
+            <ul>
+              <li *ngFor="let p of classWisePresentList">({{ p.rollNo }})-{{ p.fullName }}</li>
+            </ul>
+            <p *ngIf="classWisePresentList.length === 0" class="no-list-item">No students present.</p>
+          </div>
+
+          <!-- ABSENT LIST -->
+          <div class="absent-box">
+            <h4>Absent ({{ classWiseAbsentList.length }})</h4>
+            <ul>
+              <li *ngFor="let a of classWiseAbsentList">({{ a.rollNo }})-{{ a.fullName }}</li>
+            </ul>
+            <p *ngIf="classWiseAbsentList.length === 0" class="no-list-item">No students absent.</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!classWiseIsLoading && !classWiseErrorMessage && classControl.value && classWisePresentList.length === 0 && classWiseAbsentList.length === 0" class="no-data-message">
+        <p>No class-wise attendance data available for the selected class and date.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pop-up Display for Filtered Users -->
+  <div *ngIf="showPopup" class="popup-overlay">
+    <div class="popup-content">
+      <button class="close-button" (click)="closePopup()">&times;</button>
+      <h3>{{ selectedDesignation }} Details</h3>
+
+      <div *ngIf="filteredPresentUsers.length > 0" class="user-list-card present-users">
+        <h4>Present Users ({{ filteredPresentUsers.length }})</h4>
+        <ul>
+          <li *ngFor="let user of filteredPresentUsers">
+            {{ user.fullName }} - {{ user.designationName }}
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="filteredAbsentUsers.length > 0" class="user-list-card absent-users">
+        <h4>Absent Users ({{ filteredAbsentUsers.length }})</h4>
+        <ul>
+          <li *ngFor="let user of filteredAbsentUsers">
+            {{ user.fullName }} - {{ user.designationName }}
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="filteredPresentUsers.length === 0 && filteredAbsentUsers.length === 0" class="no-data-message">
+        <p>No users found for this designation on the selected date.</p>
+      </div>
+    </div>
+  </div>
+</div>

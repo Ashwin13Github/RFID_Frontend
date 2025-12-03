@@ -1,0 +1,85 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .table th, .table td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .btn {
+    padding: 6px 12px;
+    background: #136dec;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    opacity: 0.9;
+  }
+  
+  .update-box {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #136dec;
+    border-radius: 6px;
+    background: #f4f8ff;
+  }
+  
+  .update-box label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  
+  .update-box select,
+  .update-box textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  .btn-group {
+    margin-top: 15px;
+  }
+  
+  .btn.save {
+    background: green;
+  }
+  
+  .btn.cancel {
+    background: gray;
+  }
+  
+  .status.success {
+    color: green;
+    margin-top: 10px;
+  }
+  
+  .status.error {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .badge {
+    padding: 4px 8px;
+    border-radius: 5px;
+    color: #fff;
+  }
+  
+  .badge.open {
+    background: red;
+  }
+  
+  .badge.review {
+    background: orange;
+  }
+  
+  .badge.resolved {
+    background: green;
+  }
+  

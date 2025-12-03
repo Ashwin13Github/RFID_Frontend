@@ -1,0 +1,399 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* Full container */
+.Login_page {
+  display: flex;
+  height: 100vh;
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* Rounded corners for the entire container */
+  overflow: hidden; /* Ensure content respects border-radius */
+}
+
+/* ------------------------------
+   LEFT SECTION (IMAGE + TEXT)
+------------------------------ */
+.left-section {
+  flex: 1.2; /* Give more space to the left section */
+  background: linear-gradient(135deg, #06D286, #058ADF);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  position: relative; /* For absolute positioning of elements */
+}
+
+.left-content {
+  max-width: 400px; /* Adjust max-width as needed */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 48px; /* Larger logo font size */
+  font-weight: 100;
+  margin-bottom: 20px;
+}
+
+.coding-illustration {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+  margin-bottom: 30px; /* Space between illustration and title */
+}
+
+.title {
+  font-size: 38px; /* Larger title font size */
+  line-height: 1.2;
+  margin-bottom: 30px;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1.8; /* Improved line height */
+}
+
+.features li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 30px; /* More space for bullet */
+  text-align: left; /* Align text to left */
+}
+
+.features li::before {
+  content: "\2022"; /* Unicode bullet point */
+  position: absolute;
+  left: 0;
+  font-size: 24px; /* Larger bullet point */
+  color: white; /* White bullet point */
+}
+
+/* ------------------------------
+   RIGHT SECTION (LOGIN)
+------------------------------ */
+.right-section {
+  flex: 1; /* Right section takes remaining space */
+  padding: 60px 80px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
+  border-radius: 0 10px 10px 0; /* Rounded corners only on the right side */
+  color: black;
+}
+
+.login-title {
+  font-size: 42px; /* Larger login title */
+  font-weight: 700;
+  color: #2196f3;
+  margin-bottom: 30px;
+}
+
+/* Social buttons */
+.social-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  background: #f1f1f1;
+}
+
+.social-btn img {
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Form styling */
+.login-form {
+  width: 100%;
+  max-width: 400px; /* Slightly wider form */
+}
+
+.login-form label {
+  font-size: 16px; /* Slightly larger label font size */
+  font-weight: 500;
+  display: block;
+  margin-top: 20px; /* Increased margin-top */
+  margin-bottom: 8px; /* Added margin-bottom */
+  color: #333; /* Darker label color */
+}
+
+input {
+  width: 100%;
+  padding: 14px 12px; /* Adjusted padding */
+  border-top:0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid #BDBDBD; /* Solid border */
+  /* Rounded input fields */
+  outline: none;
+  margin-bottom: 15px;
+  font-size: 16px;
+  transition: border-color 0.3s ease; /* Smooth transition for border */
+}
+
+input:focus {
+  border-color: #918EF4; /* Highlight on focus */
+}
+
+.password-wrap {
+  position: relative;
+}
+
+.eye {
+  position: absolute;
+  right: 15px; /* Adjusted position */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for vertical centering */
+  cursor: pointer;
+  font-size: 19px; /* Slightly larger eye icon */
+  color: #777;
+}
+
+/* Remember row */
+.remember {
+  display: flex;
+  align-items: center;
+  margin: 15px 0 25px; /* Adjusted margins */
+}
+
+.remember input {
+  width: 20px; /* Standard checkbox size */
+  height: 20px; /* Standard checkbox size */
+  margin-right: 10px;
+  margin-bottom: 0%;
+  border-radius: 4px; /* Slightly rounded checkbox */
+}
+
+.remember label {
+  margin: 0; /* Remove default label margin */
+  font-size: 15px; /* Consistent font size */
+  color: #555; /* Darker text color */
+}
+
+/* Login button */
+.login-btn {
+  width: 39%;
+  padding: 15px; /* Adjusted padding */
+  background: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 19px; /* Larger font size */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.login-btn:hover {
+  background: #1976d2;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: -10px; /* Adjust error message position */
+  margin-bottom: 10px;
+  text-align: center; /* Center error message */
+}
+
+/* Sign up link */
+.signup-text {
+  margin-top: 30px; /* Increased margin-top */
+  font-size: 16px; /* Slightly larger font size */
+  color: #666; /* Darker text color */
+  text-align: center;
+}
+
+.signup-text a {
+  color: #2196f3;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease; /* Smooth transition */
+}
+
+.signup-text a:hover {
+  color: #1976d2;
+}
+.bi-eye-slash::before{
+  margin-bottom: 18px;
+}
+/* -----------------------------------------
+   RESPONSIVE BREAKPOINTS
+----------------------------------------- */
+
+/* Tablet screens */
+@media (max-width: 992px) {
+  .Login_ page{
+    flex-direction: column;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none; /* Remove shadow on tablet for full width */
+  }
+
+  .left-section {
+    height: auto;
+    padding: 30px;
+    border-radius: 0;
+    flex: none; /* Remove flex sizing on smaller screens */
+    width: 100%; /* Take full width */
+  }
+
+  .left-content {
+    max-width: none; /* Remove max-width on smaller screens */
+  }
+
+  .right-section {
+    height: auto;
+    border-radius: 0;
+    padding: 40px;
+    flex: none; /* Remove flex sizing on smaller screens */
+    width: 100%; /* Take full width */
+    box-shadow: none; /* Remove shadow on tablet for full width */
+  }
+
+  .coding-illustration {
+    max-width: 250px; /* Slightly smaller illustration on tablet */
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+
+  .title {
+    font-size: 30px; /* Adjusted title font size */
+    margin-bottom: 25px;
+  }
+
+  .logo {
+    font-size: 40px;
+  }
+
+  .login-title {
+    font-size: 32px; /* Adjusted login title font size */
+    margin-bottom: 25px;
+  }
+
+  .login-form {
+    max-width: 350px; /* Adjust form max-width for tablets */
+  }
+
+  .login-form label {
+    margin-top: 15px;
+    margin-bottom: 6px;
+  }
+
+  input {
+    padding: 12px;
+  }
+
+  .remember {
+    margin: 10px 0 20px;
+  }
+
+  .login-btn {
+    padding: 14px;
+    font-size: 18px;
+  }
+
+  .signup-text {
+    margin-top: 25px;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 600px) {
+  .left-section {
+    padding: 20px;
+  }
+
+  .logo {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }
+
+  .coding-illustration {
+    max-width: 200px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .features li {
+    font-size: 15px;
+    padding-left: 25px;
+  }
+
+  .features li::before {
+    font-size: 20px;
+  }
+
+  .right-section {
+    padding: 30px;
+  }
+
+  .login-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+ 
+
+  .login-form {
+    max-width: 100%; /* Full width for form on mobile */
+  }
+
+  .login-form label {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  input {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .eye {
+    font-size: 17px;
+  }
+
+  .remember {
+    margin: 8px 0 15px;
+  }
+
+  .login-btn {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .signup-text {
+    font-size: 14px;
+    margin-top: 20px;
+  }
+}

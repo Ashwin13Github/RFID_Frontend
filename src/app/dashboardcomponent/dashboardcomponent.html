@@ -1,0 +1,38 @@
+<div class="dashboard-container">
+  <h1>📊 Attendance Dashboard Summary</h1>
+
+  <div class="filter">
+    <label>Select Date:</label>
+    <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" />
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+  <div *ngIf="summary" class="cards">
+    <div class="card">
+      <h3>Total Reads</h3>
+      <p>{{ summary.totalReadsToday }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Active Users</h3>
+      <p>{{ summary.activeUsers }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Average Work Hours</h3>
+      <p>{{ summary.avgWorkHoursFormatted }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Employees ≥ 8 Hours</h3>
+      <p>{{ summary.employeesAbove8Hrs }}</p>
+    </div>
+
+    <div class="card last">
+      <h3>Last Updated</h3>
+      <p>{{ summary.lastUpdated | date:'medium' }}</p>
+    </div>
+  </div>
+</div>

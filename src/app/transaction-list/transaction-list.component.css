@@ -1,0 +1,67 @@
+.text-dark-blue {
+    color: #202C4B;
+}
+
+.fs-7 {
+    font-size: 0.875rem;
+}
+
+.table th {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.form-check-input:checked {
+    background-color: #136DEC;
+    border-color: #136DEC;
+}
+
+.btn-primary {
+    background-color: #136DEC;
+    border-color: #136DEC;
+}
+
+.btn-primary:hover {
+    background-color: #0f5bbd;
+    border-color: #0f5bbd;
+}
+
+.text-primary {
+    color: #136DEC !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #136DEC;
+    border-color: #136DEC;
+}
+
+.pagination .page-link {
+    color: #474747;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    color: #202C4B;
+}
+
+.card {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Custom scrollbar for table responsive */
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

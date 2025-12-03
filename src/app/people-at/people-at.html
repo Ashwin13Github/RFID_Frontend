@@ -1,18 +1,61 @@
 <div class="people-container">
-  <h2>People at Location</h2>
+  <h2 style="color: #136dec;">People at Location</h2>
 
-  <div class="search-box">
-    <select [(ngModel)]="location">
-      <option value="">-- Select Location --</option>
-      <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
-    </select>
-    <button (click)="onLocationSubmit()">Search</button>
+  <div class="top-bar">
+    <div class="search-box">
+      <select [(ngModel)]="location">
+        <option value="">-- Select Location --</option>
+        <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+      </select>
+      <button (click)="onLocationSubmit()">Search</button>
+    </div>
+
+    <!-- PAGE SIZE DROPDOWN -->
+    <div class="page-size-box">
+      <label>People per page:</label>
+      <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+        <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+      </select>
+    </div>
+
+    <!-- SORT BUTTON WITH DROPDOWN -->
+    <div class="sort-wrapper">
+      <button class="sort-btn" (click)="toggleSortDropdown()">Sort ⬍</button>
+
+      <div class="sort-dropdown" *ngIf="showSortDropdown">
+        <!-- Sort Column -->
+        <div class="sort-column">
+          <label>Sort Column:</label>
+          <ul>
+            <li *ngFor="let col of sortColumns" (click)="setSortColumn(col)">
+              {{ col.label }}
+              <span *ngIf="sortColumn === col.value">✔</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sort Direction -->
+        <div class="sort-direction">
+          <label>Direction:</label>
+          <ul>
+            <li (click)="setSortDirection('asc')">
+              Ascending <span *ngIf="sortDirection === 'asc'">✔</span>
+            </li>
+            <li (click)="setSortDirection('desc')">
+              Descending <span *ngIf="sortDirection === 'desc'">✔</span>
+            </li>
+          </ul>
+        </div>
+
+        <button class="apply-btn" (click)="applySorting(); closeSortDropdown()">Apply</button>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="isLoading" class="loading">Loading...</div>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-  <table *ngIf="people.length > 0" class="people-table">
+  <table *ngIf="!isLoading && paginatedPeople.length > 0" class="people-table">
     <thead>
       <tr>
         <th>UID</th>
@@ -20,16 +63,35 @@
         <th>Action</th>
         <th>Location</th>
         <th>Timestamp</th>
+        <th>Designation</th>
+        <th>Class/Department</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let person of people">
+      <tr *ngFor="let person of paginatedPeople">
         <td>{{ person.uid }}</td>
-        <td>{{ person.name || 'N/A' }}</td>
+        <td>{{ person.fullName }}</td>
         <td>{{ person.action }}</td>
         <td>{{ person.location }}</td>
-        <td>{{ person.timestamp }}</td>
+        <td>{{ person.timestamp | date : 'MM/dd/yy, h:mm a' }}</td>
+        <td>{{ person.designation }}</td>
+        <td>{{ person.classOrDept }}</td>
       </tr>
     </tbody>
   </table>
+
+  <div class="no-people" *ngIf="!isLoading && paginatedPeople.length == 0">No people found.</div>
+
+  <!-- ================= PAGINATION ================= -->
+  <div class="pagination" *ngIf="!isLoading && filteredPeople.length > itemsPerPage">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+    <button
+      *ngFor="let page of totalPagesArray"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
 </div>

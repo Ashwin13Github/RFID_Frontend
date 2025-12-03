@@ -1,0 +1,170 @@
+<div class="crud-container-wrapper">
+  <div class="crud-container">
+    <h2 style="color: #136dec">Designation Management</h2>
+
+    <div class="tabs">
+      <button [class.active]="activeTab === 'designation'" (click)="activeTab = 'designation'">
+        Designations
+      </button>
+      <button [class.active]="activeTab === 'user'" (click)="activeTab = 'user'">Users</button>
+    </div>
+
+    <!-- ================= DESIGNATION TAB CONTENT ================= -->
+    <div *ngIf="activeTab === 'designation'" class="tab-content">
+      <div class="top-bar">
+        <h3>Designations</h3>
+        <button class="add-btn" (click)="openDesignationModal()">Add New</button>
+
+        <!-- PAGE SIZE DROPDOWN -->
+        <div class="page-size-box">
+          <label>Items per page:</label>
+          <select [(ngModel)]="designationItemsPerPage" (change)="changeDesignationItemsPerPage()">
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+          </select>
+        </div>
+
+        <!-- SORT BUTTON WITH DROPDOWN -->
+        <div class="sort-wrapper">
+          <button class="sort-btn" (click)="toggleDesignationSortDropdown()">Sort ⬍</button>
+
+          <div class="sort-dropdown" *ngIf="showDesignationSortDropdown">
+            <!-- Sort Column -->
+            <div class="sort-column">
+              <label>Sort Column:</label>
+              <ul>
+                <li
+                  *ngFor="let col of designationSortColumns"
+                  (click)="setDesignationSortColumn(col)"
+                >
+                  {{ col.label }}
+                  <span *ngIf="designationSortColumn === col.value">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Sort Direction -->
+            <div class="sort-direction">
+              <label>Direction:</label>
+              <ul>
+                <li (click)="setDesignationSortDirection('asc')">
+                  Ascending <span *ngIf="designationSortDirection === 'asc'">✔</span>
+                </li>
+                <li (click)="setDesignationSortDirection('desc')">
+                  Descending <span *ngIf="designationSortDirection === 'desc'">✔</span>
+                </li>
+              </ul>
+            </div>
+
+            <button
+              class="apply-btn"
+              (click)="applyDesignationSorting(); closeDesignationSortDropdown()"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="designationLoading" class="loading">Loading designations...</div>
+
+      <table *ngIf="!designationLoading && paginatedDesignations.length > 0" class="rfid-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Designation Name</th>
+            <th class="action-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of paginatedDesignations; let i = index">
+            <td>{{ d.designationId }}</td>
+            <td>{{ d.designationName }}</td>
+            <td class="action-column">
+              <div class="action-dropdown-wrapper">
+                <button class="action-btn" (click)="toggleActionDropdown('designation', i, $event)">
+                  ⋮
+                </button>
+                <div
+                  class="action-dropdown"
+                  *ngIf="showActionDropdown === 'designation' && activeDropdownIndex === i"
+                >
+                  <button (click)="openDesignationModal(d)">Edit</button>
+                  <button class="delete-btn" (click)="deleteDesignation(d.designationId)">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="no-items" *ngIf="!designationLoading && paginatedDesignations.length == 0">
+        No designations found.
+      </div>
+
+      <!-- PAGINATION -->
+      <div
+        class="pagination"
+        *ngIf="!designationLoading && filteredDesignations.length > designationItemsPerPage"
+      >
+        <button (click)="prevDesignationPage()" [disabled]="currentDesignationPage === 1">
+          Prev
+        </button>
+        <button
+          *ngFor="let page of totalDesignationPagesArray"
+          [class.active]="page === currentDesignationPage"
+          (click)="goToDesignationPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button
+          (click)="nextDesignationPage()"
+          [disabled]="currentDesignationPage === totalDesignationPages"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= USER MANAGEMENT COMPONENT ================= -->
+    <div *ngIf="activeTab === 'user'" class="tab-content">
+      <app-user-management></app-user-management>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+<!-- Designation Modal -->
+<div class="modal-backdrop" *ngIf="showDesignationModal" (click)="closeDesignationModal()"></div>
+<div class="popup-modal" *ngIf="showDesignationModal">
+  <h4 class="modal-section-header">
+    {{ isEditingDesignation ? 'Edit Designation' : 'Add Designation' }}
+  </h4>
+  <div class="form-grid-two-column">
+    <div class="form-group">
+      <label>Designation ID</label>
+      <input
+        [(ngModel)]="designationModel.designationId"
+        placeholder="Designation ID"
+        type="number"
+        [disabled]="isEditingDesignation"
+      />
+    </div>
+    <div class="form-group">
+      <label>Designation Name</label>
+      <input [(ngModel)]="designationModel.designationName" placeholder="Designation Name" />
+    </div>
+  </div>
+  <div class="modal-actions">
+    <button class="secondary-btn" (click)="closeDesignationModal()">Cancel</button>
+    <button
+      class="apply-btn"
+      (click)="isEditingDesignation ? updateDesignation() : createDesignation()"
+      [disabled]="designationLoading"
+    >
+      <span *ngIf="designationLoading" class="spinner"></span>
+      {{ isEditingDesignation ? 'Update' : 'Create' }}
+    </button>
+  </div>
+</div>

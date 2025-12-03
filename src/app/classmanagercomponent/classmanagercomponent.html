@@ -1,0 +1,63 @@
+<div class="crud-container-wrapper">
+  <h2 style="color: #136dec; text-align: center">Class Management</h2>
+
+  <div *ngIf="isLoading" class="loading">Processing request...</div>
+  <div *ngIf="message" class="status-message success">{{ message }}</div>
+  <div *ngIf="errorMessage" class="status-message error">{{ errorMessage }}</div>
+
+  <div class="crud-container">
+    <!-- ===== CREATE CLASS ===== -->
+    <div class="card">
+      <h3 style="color: #136dec">Create New Class</h3>
+      <div class="form-group">
+        <label for="className">Class Name:</label>
+        <input
+          id="className"
+          type="text"
+          placeholder="Enter Class Name"
+          [formControl]="className"
+          class="form-control"
+        />
+      </div>
+      <button (click)="createClass()" class="apply-btn" [disabled]="isLoading">Create Class</button>
+    </div>
+
+    <!-- ===== INSERT STUDENT INTO CLASS ===== -->
+    <div class="card">
+      <h3 style="color: #136dec">Assign Student to Class</h3>
+      <div class="form-group">
+        <label for="insertClassName">Class Name:</label>
+        <input
+          id="insertClassName"
+          type="text"
+          placeholder="Class Name"
+          [formControl]="insertClassName"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="userId">User ID:</label>
+        <input
+          id="userId"
+          type="number"
+          placeholder="User ID"
+          [formControl]="userId"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="rollNo">Roll No:</label>
+        <input
+          id="rollNo"
+          type="number"
+          placeholder="Roll No"
+          [formControl]="rollNo"
+          class="form-control"
+        />
+      </div>
+      <button (click)="insertStudent()" class="apply-btn" [disabled]="isLoading">
+        Assign Student
+      </button>
+    </div>
+  </div>
+</div>

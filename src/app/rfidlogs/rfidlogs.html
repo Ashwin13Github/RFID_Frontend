@@ -1,41 +1,36 @@
-
-
-<div class="container">
+<!-- <div class="container">
   <h2>RFID Logs</h2>
 
-  <!-- Filter Bar -->
+
   <div
     class="filter-bar"
     style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center"
   >
-    <!-- Location Dropdown -->
+
     <select [(ngModel)]="filterLocation">
       <option value="">All Locations</option>
       <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
     </select>
 
-    <!-- Action Dropdown -->
     <select [(ngModel)]="filterAction">
       <option value="">All Actions</option>
       <option value="Entry">Entry</option>
       <option value="Exit">Exit</option>
     </select>
 
-    <!-- After Datetime -->
     <input type="text" placeholder="MM/dd/yy, h:mm a" [(ngModel)]="filterAfterDate" />
 
-    <!-- UID Search -->
+
     <input type="text" placeholder="UID" [(ngModel)]="filterUid" />
 
-    <!-- Filter Button -->
+   
     <button class="filter" (click)="applyFilters()">Filter</button>
   </div>
 
-  <!-- Loading / Error -->
   <div *ngIf="isLoading">Loading logs...</div>
   <div *ngIf="errorMessage">{{ errorMessage }}</div>
 
-  <!-- Logs Table -->
+
   <table *ngIf="!isLoading && filteredLogs.length > 0" class="rfid-table">
     <thead>
       <tr>
@@ -59,6 +54,6 @@
     </tbody>
   </table>
 
-  <!-- No logs -->
+ 
   <div *ngIf="!isLoading && filteredLogs.length === 0">No logs found.</div>
-</div>
+</div> -->

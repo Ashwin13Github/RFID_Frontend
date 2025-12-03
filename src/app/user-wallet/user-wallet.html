@@ -1,0 +1,77 @@
+<div class="crud-container-wrapper">
+  <div class="crud-container">
+    <h2 style="color: #136dec">RFID Wallet</h2>
+
+    <div *ngIf="isLoading" class="loading">Processing request...</div>
+
+    <div class="card">
+      <h3>Your Wallet</h3>
+      <div class="form-group">
+        <label for="yourUid">Your UID:</label>
+        <input
+          id="yourUid"
+          [(ngModel)]="uid"
+          placeholder="Tap your tag"
+          readonly
+          class="form-control"
+          (ngModelChange)="fetchUser()"
+        />
+      </div>
+
+      <div *ngIf="user" class="user-info card-secondary">
+        <p><strong>Name:</strong> {{ user.fullName }}</p>
+        <p><strong>User ID:</strong> {{ user.userId }}</p>
+        <p><strong>Wallet Balance:</strong> ₹{{ user.walletBalance | number : '1.2-2' }}</p>
+      </div>
+      <div *ngIf="!user && uid" class="no-user-info status-message error">
+        <p>No user found for this UID. Please ensure your tag is registered.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Select Action</h3>
+      <div class="form-group">
+        <label for="actionType">Action:</label>
+        <select id="actionType" [(ngModel)]="selectedAction" class="form-control">
+          <option value="recharge">Recharge Wallet</option>
+          <option value="transaction">Make Transaction</option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="selectedAction === 'transaction'">
+        <label for="receiverUID">Receiver UID:</label>
+        <input
+          id="receiverUID"
+          type="text"
+          [(ngModel)]="receiverUID"
+          placeholder="Enter Receiver UID"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount (₹):</label>
+        <input
+          id="amount"
+          type="number"
+          [(ngModel)]="amount"
+          placeholder="Enter amount"
+          class="form-control"
+        />
+      </div>
+      <button
+        class="apply-btn"
+        (click)="executeAction()"
+        [disabled]="
+          isLoading ||
+          !user ||
+          amount <= 0 ||
+          !selectedAction ||
+          (selectedAction === 'transaction' && !receiverUID)
+        "
+      >
+        Execute
+      </button>
+    </div>
+  </div>
+</div>

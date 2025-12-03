@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Success Toast */
+.toast-success {
+  background-color: white !important;
+  color: black !important;
+}
+
+.toast-success .Toastify__progress-bar {
+  background-color: green !important;
+}
+
+/* Error Toast */
+.toast-error {
+  background-color: white !important;
+  color: black !important;
+}
+
+.toast-error .Toastify__progress-bar {
+  background-color: red !important;
+}

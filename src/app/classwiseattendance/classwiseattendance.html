@@ -1,0 +1,71 @@
+<div class="crud-container-wrapper">
+  <div class="crud-container">
+    <h2 style="color: #136dec;">Class-wise Attendance Overview</h2>
+    <div class="top-bar">
+      <div class="form-group">
+        <label for="className">Class Name:</label>
+        <input
+          id="className"
+          type="text"
+          placeholder="Enter Class Name"
+          [formControl]="classControl"
+        />
+      </div>
+      <div class="form-group">
+        <label for="attendanceDate">Date:</label>
+        <input id="attendanceDate" type="date" [formControl]="dateControl" />
+      </div>
+      <button class="apply-btn" (click)="fetchData()">Fetch</button>
+    </div>
+
+    <div class="content-grid">
+      <!-- LEFT SIDE: CHARTS -->
+      <div class="chart-card">
+        <h3>Attendance Charts</h3>
+
+        <div class="chart-wrapper">
+          <div class="chart">
+            <h4>Pie Chart</h4>
+            <canvas baseChart [data]="pieChartData" [options]="chartOptions" [type]="'pie'">
+            </canvas>
+          </div>
+
+          <div class="chart">
+            <h4>Bar Chart</h4>
+            <canvas baseChart [data]="barChartData" [options]="chartOptions" [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+
+        <div class="chart-summary">
+          <p>Total Students: {{ totalStudents }}</p>
+          <p class="present-count">Present: {{ presentList.length }}</p>
+          <p class="absent-count">Absent: {{ absentList.length }}</p>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE: STUDENT LIST -->
+      <div class="list-card">
+        <h3>Student Status</h3>
+
+        <!-- PRESENT LIST -->
+        <div class="present-box">
+          <h4>Present ({{ presentList.length }})</h4>
+          <ul>
+            <li *ngFor="let p of presentList">({{ p.rollNo }})-{{ p.fullName }}</li>
+          </ul>
+          <p *ngIf="presentList.length === 0" class="no-list-item">No students present.</p>
+        </div>
+
+        <!-- ABSENT LIST -->
+        <div class="absent-box">
+          <h4>Absent ({{ absentList.length }})</h4>
+          <ul>
+            <li *ngFor="let a of absentList">({{ a.rollNo }})-{{ a.fullName }}</li>
+          </ul>
+          <p *ngIf="absentList.length === 0" class="no-list-item">No students absent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

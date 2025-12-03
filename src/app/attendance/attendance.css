@@ -1,0 +1,284 @@
+.container {
+  margin: 30px auto;
+  padding: 25px 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: initial;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* 🔍 Filter/Search Section */
+.search-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: flex-end;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.search-section input[type="text"],
+.search-section input[type="date"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 220px;
+}
+
+.search-section button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-section button:hover {
+  background-color: #0056b3;
+}
+
+/* 🧾 Table Styling */
+.rfid-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.rfid-table th,
+.rfid-table td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.rfid-table th {
+  background-color:white;
+  color: #007bff;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #007bff; /* Added line */
+}
+
+.rfid-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 🟢 Entry / 🔴 Exit Colors (if used) */
+.entry {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.exit {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* 📅 Date Column Styling */
+td:nth-child(4) {
+  color: #555;
+  font-weight: 500;
+}
+
+/* 🕓 Total Hours Column */
+td:last-child {
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* ⚠️ No Data / Error Message */
+.error, .no-records {
+  text-align: center;
+  color: #666;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+/* 🌀 Loading Animation (optional) */
+.loading {
+  text-align: center;
+  color: #007bff;
+  font-size: 16px;
+  margin-top: 25px;
+  font-weight: 500;
+}
+/* ✅ Green for >= 8 hrs, Red for < 8 hrs */
+.hours-green {
+  color: #28a745 !important;
+  font-weight: 700;
+}
+
+.hours-red {
+  color: #dc3545 !important;
+  font-weight: 700;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 9px 16px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn {
+  background: #007bff;
+  color: #fff;
+}
+.filter-btn:hover {
+  background: #0056b3;
+}
+
+.sort-btn {
+  background: #17a2b8;
+  color: #fff;
+}
+.sort-btn:hover {
+  background: #0e7b8c;
+}
+
+.apply-btn {
+  background: #28a745;
+  color: #fff;
+}
+.apply-btn:hover {
+  background: #218838;
+}
+
+.close-btn {
+  background: #dc3545;
+  color: #fff;
+}
+.close-btn:hover {
+  background: #b02a37;
+}
+
+/* ================= PAGE SIZE PANEL ================= */
+.page-size-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.page-size-box label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.page-size-box select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ================= SORT DROPDOWN ================= */
+.sort-wrapper {
+  position: relative;
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  padding: 12px 15px;
+  z-index: 50;
+  font-size: 14px;
+}
+
+.sort-dropdown label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sort-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 10px 0;
+}
+
+.sort-dropdown ul li {
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-dropdown ul li:hover {
+  background: #f1f1f1;
+}
+
+.sort-dropdown ul li span {
+  float: right;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  background: #0056b3;
+}
+
+.pagination button.active {
+  background: #0056b3;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}

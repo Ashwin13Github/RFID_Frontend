@@ -1,17 +1,25 @@
 .people-container {
-  max-width: 900px;
   margin: 30px auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: initial;
 }
 
 .people-container h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
+}
+
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .search-box {
@@ -68,17 +76,26 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-}
-
-.people-table th, .people-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .people-table th {
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color: #007bff;
+  text-align: center;
+  padding: 12px 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #007bff; /* Added line */
+}
+
+.people-table td {
+  padding: 12px 10px;
+  text-align: center;
+  border-bottom: 1px solid #e3e3e3;
 }
 
 .people-table tr:nth-child(even) {
@@ -88,6 +105,7 @@
 .people-table tr:hover {
   background-color: #e6f7ff;
 }
+
 .search-box select {
   padding: 10px 15px;
   font-size: 16px;
@@ -99,5 +117,156 @@
 .search-box select:focus {
   border-color: #007bff;
   outline: none;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 9px 16px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn {
+  background: #007bff;
+  color: #fff;
+}
+.filter-btn:hover {
+  background: #0056b3;
+}
+
+.sort-btn {
+  background: #17a2b8;
+  color: #fff;
+}
+.sort-btn:hover {
+  background: #0e7b8c;
+}
+
+.apply-btn {
+  background: #28a745;
+  color: #fff;
+}
+.apply-btn:hover {
+  background: #218838;
+}
+
+.close-btn {
+  background: #dc3545;
+  color: #fff;
+}
+.close-btn:hover {
+  background: #b02a37;
+}
+
+/* ================= PAGE SIZE PANEL ================= */
+.page-size-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.page-size-box label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.page-size-box select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ================= SORT DROPDOWN ================= */
+.sort-wrapper {
+  position: relative;
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  padding: 12px 15px;
+  z-index: 50;
+  font-size: 14px;
+}
+
+.sort-dropdown label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sort-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 10px 0;
+}
+
+.sort-dropdown ul li {
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-dropdown ul li:hover {
+  background: #f1f1f1;
+}
+
+.sort-dropdown ul li span {
+  float: right;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  background: #0056b3;
+}
+
+.pagination button.active {
+  background: #0056b3;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* ================= EMPTY STATE ================= */
+.no-people {
+  text-align: center;
+  padding: 25px;
+  font-size: 16px;
+  color: #777;
 }
 
